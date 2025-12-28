@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  # Servicio de Python
+  backend:
+    build: ./osint_module_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./osint_module_backend:/app  # Esto permite Hot-Reload (ver cambios sin reiniciar)
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=serviceAccountKey.json
+
+  # Servicio de React
+  frontend:
+    build: ./osint_module_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./osint_module_frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend 

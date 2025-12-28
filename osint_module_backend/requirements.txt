@@ -1,0 +1,27 @@
+# --- Framework Web & API ---
+fastapi
+uvicorn[standard]
+python-multipart
+
+# --- Base de Datos (Firebase) ---
+firebase-admin
+google-cloud-firestore
+
+# --- Scraping & HTTP ---
+requests
+beautifulsoup4
+playwright
+feedparser
+praw
+
+# --- Procesamiento de Datos & NLP ---
+pandas
+textblob
+nltk
+
+# --- Utilidades & Scheduler ---
+apscheduler
+python-dotenv
+pydantic
+pydantic-settings
+jinja2
