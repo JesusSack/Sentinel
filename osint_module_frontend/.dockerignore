@@ -1,0 +1,11 @@
+README.md
+.git
+__pycache__
+*.pyc
+venv
+.env
+node_modules
+npm-debug.log
+dist
+.git
+.env

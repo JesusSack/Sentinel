@@ -1,92 +1,199 @@
-# 🛡️ Sentinel: OSINT Intelligence Module
+# 🛡️ SENTINEL - Advanced OSINT Threat Intelligence Platform
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue) ![Python](https://img.shields.io/badge/backend-FastAPI-green) ![React](https://img.shields.io/badge/frontend-React%20%7C%20Tailwind-blue) ![Docker](https://img.shields.io/badge/deployment-Docker-2496ED)
+![Status](https://img.shields.io/badge/status-production_ready-success)
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![Security](https://img.shields.io/badge/security-Firebase_Auth-red)
+![Docker](https://img.shields.io/badge/deploy-Docker_Compose-2496ED)
 
-> **Full-Stack Open Source Intelligence (OSINT) Platform & Real-Time Threat Monitoring System.**
+> **Comprehensive Cyber Intelligence Platform for real-time threat ingestion, normalization, analysis, and management.**
 
 ---
 
 ## 📋 Project Overview
-**Sentinel** is an automated solution designed for the ingestion, processing, and visualization of cybersecurity intelligence. The system monitors global sources (such as *The Hacker News* and *CISA Alerts*), applies **Natural Language Processing (NLP)** to detect sentiment and classify risk levels, and presents findings in an operational Dashboard for decision-making.
 
-### 🚀 Key Features
-* **Automated Ingestion:** Integrated Scheduler that scans RSS/XML feeds every 10 minutes.
-* **AI-Powered Analysis:** NLP Engine (`TextBlob`) that calculates sentiment scores and assigns risk levels (LOW, MEDIUM, CRITICAL) automatically.
-* **Decoupled Architecture:** Backend (REST API) separated from Frontend (SPA) to ensure maximum scalability.
-* **Cloud Persistence:** NoSQL data storage using **Google Cloud Firestore**.
-* **Docker Ready:** Containerized infrastructure ready for deployment with a single command.
+**Sentinel** has evolved from a simple RSS aggregator into an **Enterprise-Grade** OSINT threat intelligence solution. The system allows security analysts to monitor multiple data sources, manage the alert lifecycle (detection, analysis, escalation), and generate automated executive reports.
+
+Unlike traditional feed readers, Sentinel implements a secure architecture with **Identity Access Management (IAM)**, custom algorithm-based data cleaning, and cloud persistence.
+
+### 🚀 Key Capabilities
+
+* **🔐 Identity-First Security:** Complete authentication system (Login/Register/Recovery) delegated to **Google Firebase Auth**. Routes protected via JWT.
+* **🧠 Ingestion & Normalization Engine:** Robust scraper that ingests RSS/XML feeds (CISA, The Hacker News, BBC), eliminates HTML noise ("divs" and styling garbage), and structures the data.
+* **⚡ Incident Management:** Operational workflow allowing the analyst to:
+    * **Escalate 🔴:** Mark critical threats for immediate investigation.
+    * **Discard ❌:** Remove false positives from the workflow.
+* **📄 Automated Reporting:** Generation of intelligence reports in **PDF (Executive)** and **CSV (Analytical)** formats with character sanitization and professional formatting.
+* **💎 Cyberpunk Glassmorphism UI/UX:** Modern interface developed in React with advanced visual effects, native Dark Mode, and an interactive agent profile.
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Area | Technologies |
+| Area | Key Technologies |
 | :--- | :--- |
-| **Backend** | Python 3.10+, **FastAPI**, Uvicorn, APScheduler |
-| **Data Processing** | Feedparser, TextBlob (NLP/NLTK), Regex |
-| **Frontend** | **React 18**, Vite, Axios, Lucide Icons |
-| **UI/Styling** | **Tailwind CSS** (Responsive Design & Dark Mode) |
-| **Database** | Google Firebase (Firestore NoSQL) |
-| **DevOps** | **Docker**, Docker Compose |
+| **Frontend** | React 18, Vite, **Tailwind CSS**, Axios, Lucide React (Icons) |
+| **Backend** | Python 3.10, **FastAPI**, Pandas (Data Analysis), FPDF (Reporting), Feedparser |
+| **Database** | **Google Cloud Firestore** (NoSQL Real-time Database) |
+| **Auth & Security** | Google Firebase Authentication (Email/Password + JWT) |
+| **DevOps** | Docker, Docker Compose (Multi-container Orchestration) |
 
 ---
 
 ## 🏗️ System Architecture
 
-The data flow follows a real-time ETL (Extract, Transform, Load) process:
+The data flow follows a modern containerized microservices pipeline:
 
-1.  **Extract:** The `Scheduler` triggers the `Scraper Service` to fetch XMLs from configured sources.
-2.  **Transform:** The `Analyzer Service` sanitizes HTML content and evaluates keywords + sentiment.
-3.  **Load:** Structured findings are stored in Firestore.
-4.  **Visualize:** The user queries the API via the React Dashboard.
+1.  **Ingestion (Python Worker):** The `run_scanner.py` orchestrator queries configured sources and extracts metadata.
+2.  **Processing (Data Cleaning):** Regex filters and HTML Parsing are applied to sanitize dirty feed content.
+3.  **Persistence (Firestore):** Findings are stored with an initial `risk_level` calculated by basic NLP.
+4.  **Consumption (React Client):** The analyst interacts with the authenticated dashboard.
+5.  **Export (Backend API):** On-demand binary generation (PDF/CSV) filtering by criticality.
 
 ---
 
-## ⚙️ Installation & Deployment
+## ⚙️ Installation & Deployment Guide
 
 ### Prerequisites
-* **Docker Desktop** installed.
-* **Google Firebase Credentials:** You need a `serviceAccountKey.json` file.
+* Docker and Docker Compose installed.
+* Active Google Firebase account.
 
-### 🐳 Quick Start
-The project includes full orchestration. Follow these steps to deploy:
+### 1. Clone the repository
+```bash
+git clone [https://github.com/your-username/sentinel-osint.git](https://github.com/your-username/sentinel-osint.git)
+cd sentinel-osint
 
-1.  **Clone the repository:**
-    ```bash
-    git clone <your-repo-url>
-    cd osint
-    ```
+Here is the professional English translation of your README. It uses technical terminology standard in the cybersecurity and software engineering industry (e.g., "Ingestion," "Sanitization," "Pipeline," "Deploy").
 
-2.  **Setup Credentials:**
-    Place your `serviceAccountKey.json` file inside the `osint_module_backend/` directory.
-    *(Note: This file is excluded from the repository for security reasons).*
+Copy the code block below and replace the content of your README.md.
 
-3.  **Launch Services:**
-    Run the following command to build and start the containers:
-    ```bash
-    docker-compose up --build
-    ```
+Markdown
 
-Once the containers are running, access the services:
+# 🛡️ SENTINEL - Advanced OSINT Threat Intelligence Platform
 
-* **Frontend Dashboard:** [http://localhost:5173](http://localhost:5173)
-* **Backend API Docs:** [http://localhost:8000/docs](http://localhost:8000/docs)
+![Status](https://img.shields.io/badge/status-production_ready-success)
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![Security](https://img.shields.io/badge/security-Firebase_Auth-red)
+![Docker](https://img.shields.io/badge/deploy-Docker_Compose-2496ED)
+
+> **Comprehensive Cyber Intelligence Platform for real-time threat ingestion, normalization, analysis, and management.**
 
 ---
 
-## 🔌 API Reference
-The backend exposes a fully documented RESTful API (Swagger/OpenAPI).
+## 📋 Project Overview
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/api/v1/findings` | Retrieve processed intelligence findings. |
-| `POST` | `/api/v1/sources` | Register a new intelligence source (RSS/Atom). |
-| `GET` | `/health` | System health check and uptime monitoring. |
+**Sentinel** has evolved from a simple RSS aggregator into an **Enterprise-Grade** OSINT threat intelligence solution. The system allows security analysts to monitor multiple data sources, manage the alert lifecycle (detection, analysis, escalation), and generate automated executive reports.
+
+Unlike traditional feed readers, Sentinel implements a secure architecture with **Identity Access Management (IAM)**, custom algorithm-based data cleaning, and cloud persistence.
+
+### 🚀 Key Capabilities
+
+* **🔐 Identity-First Security:** Complete authentication system (Login/Register/Recovery) delegated to **Google Firebase Auth**. Routes protected via JWT.
+* **🧠 Ingestion & Normalization Engine:** Robust scraper that ingests RSS/XML feeds (CISA, The Hacker News, BBC), eliminates HTML noise ("divs" and styling garbage), and structures the data.
+* **⚡ Incident Management:** Operational workflow allowing the analyst to:
+    * **Escalate 🔴:** Mark critical threats for immediate investigation.
+    * **Discard ❌:** Remove false positives from the workflow.
+* **📄 Automated Reporting:** Generation of intelligence reports in **PDF (Executive)** and **CSV (Analytical)** formats with character sanitization and professional formatting.
+* **💎 Cyberpunk Glassmorphism UI/UX:** Modern interface developed in React with advanced visual effects, native Dark Mode, and an interactive agent profile.
 
 ---
 
-## 👤 Author
-**Jesús** - *AI & Software Developer*
+## 🛠️ Tech Stack
+
+| Area | Key Technologies |
+| :--- | :--- |
+| **Frontend** | React 18, Vite, **Tailwind CSS**, Axios, Lucide React (Icons) |
+| **Backend** | Python 3.10, **FastAPI**, Pandas (Data Analysis), FPDF (Reporting), Feedparser |
+| **Database** | **Google Cloud Firestore** (NoSQL Real-time Database) |
+| **Auth & Security** | Google Firebase Authentication (Email/Password + JWT) |
+| **DevOps** | Docker, Docker Compose (Multi-container Orchestration) |
 
 ---
-*Developed for technical demonstration purposes using modern software engineering practices.*
+
+## 🏗️ System Architecture
+
+The data flow follows a modern containerized microservices pipeline:
+
+1.  **Ingestion (Python Worker):** The `run_scanner.py` orchestrator queries configured sources and extracts metadata.
+2.  **Processing (Data Cleaning):** Regex filters and HTML Parsing are applied to sanitize dirty feed content.
+3.  **Persistence (Firestore):** Findings are stored with an initial `risk_level` calculated by basic NLP.
+4.  **Consumption (React Client):** The analyst interacts with the authenticated dashboard.
+5.  **Export (Backend API):** On-demand binary generation (PDF/CSV) filtering by criticality.
+
+---
+
+## ⚙️ Installation & Deployment Guide
+
+### Prerequisites
+* Docker and Docker Compose installed.
+* Active Google Firebase account.
+
+### 1. Clone the repository
+```bash
+git clone [https://github.com/your-username/sentinel-osint.git](https://github.com/your-username/sentinel-osint.git)
+cd sentinel-osint
+2. Secrets Configuration
+The system requires credentials to function.
+
+Backend: Place your Firebase serviceAccountKey.json file inside the osint_module_backend/ folder.
+
+Frontend: Create a .env file in osint_module_frontend/ with your public keys:
+VITE_FIREBASE_API_KEY=AIzaSy...
+VITE_FIREBASE_AUTH_DOMAIN=...
+
+3. Deployment (Docker)
+Launch the full environment with a single command:
+ docker-compose up --build
+ Dashboard: http://localhost:5173
+
+API Documentation: http://localhost:8000/docs
+
+
+📖 Operations Manual
+Login: Register with a valid email. The system will send a verification email (simulated or real depending on config).
+
+Source Management: Access the Sources ⚙️ menu to add monitoring URLs (e.g., https://www.cisa.gov/uscert/ncas/current-activity.xml).
+
+Analysis:
+
+Monitor news cards on the Dashboard.
+
+Use the Escalate button for serious incidents or Discard for noise.
+
+Deliverable Generation:
+
+Click PDF to download a clean report of critical threats (High/Critical).
+
+Click Excel to download the full dataset for forensic analysis.
+
+
+## 📂 Project Structure
+
+```text
+sentinel-osint/
+├── osint_module_backend/    # Python/FastAPI Service
+│   ├── app/
+│   │   ├── api/            # admin.py, endpoints.py, repost.py
+│   │   ├── models/         # finding.py, source.py
+│   │   ├── scrapers/       # base.py, rss_scraper.py
+│   │   ├── service/        # analyzer.py, schedule.py
+│   │   ├── auth.py         # Authentication logic
+│   │   └── main.py         # Application entry point
+│   ├── Dockerfile
+│   └── serviceAccountKey.json (Excluded from repo)
+├── osint_module_frontend/   # React/Vite Client
+│   ├── public/
+│   ├── src/
+│   │   ├── assets/         # react.svg
+│   │   ├── App.css
+│   │   ├── App.jsx         # Main UI Logic
+│   │   ├── firebase.js     # Firebase Config
+│   │   ├── index.css
+│   │   └── main.jsx
+│   ├── Dockerfile
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── tailwind.config.js
+│   └── vite.config.js
+├── docker-compose.yml       # Container Orchestration
+├── .gitignore
+└── README.md

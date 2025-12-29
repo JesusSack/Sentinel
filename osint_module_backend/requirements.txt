@@ -1,27 +1,35 @@
-# --- Framework Web & API ---
+# Framework Web & API
 fastapi
 uvicorn[standard]
 python-multipart
 
-# --- Base de Datos (Firebase) ---
-firebase-admin
+# Base de Datos (Firebase)
+firebase-admin            
 google-cloud-firestore
 
-# --- Scraping & HTTP ---
+# Scraping & HTTP 
 requests
 beautifulsoup4
 playwright
 feedparser
 praw
 
-# --- Procesamiento de Datos & NLP ---
+# Procesamiento de Datos & NLP
 pandas
 textblob
 nltk
 
-# --- Utilidades & Scheduler ---
+# Utilidades & Scheduler
 apscheduler
 python-dotenv
 pydantic
 pydantic-settings
 jinja2
+
+# Seguridad & Auth
+python-jose[cryptography]
+passlib[bcrypt]
+bcrypt==4.0.1
+
+# Reportes
+fpdf

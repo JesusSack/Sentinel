@@ -1,35 +1,35 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import firebase_admin
+from firebase_admin import credentials
+import os
+
+#  endpoints
 from app.api.v1.endpoints import router as api_router
-from app.services.scheduler import start_scheduler, run_ingestion_cycle 
+from app.api.v1.reports import router as reports_router
+from app.api.v1.admin import router as admin_router
 
-app = FastAPI(
-    title="OSINT Intelligence Module",
-    description="API para ingestión, análisis y reporte de inteligencia operativa.",
-    version="1.0.0"
-)
+app = FastAPI(title="OSINT Module API", version="1.0.0")
 
-@app.on_event("startup")
-def startup_event():
-    print("🚀 Iniciando servicios...")
-    start_scheduler()
-    run_ingestion_cycle() 
-
-@app.on_event("shutdown")
-def shutdown_event():
-    print("🛑 Apagando servicios...")
-
+#    CORS  
+origins = ["*"] 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+#  INICIALIZAR FIREBASE
+if not firebase_admin._apps:
+    cred = credentials.Certificate("serviceAccountKey.json")
+    firebase_admin.initialize_app(cred)
 
 app.include_router(api_router, prefix="/api/v1")
+app.include_router(reports_router, prefix="/api/v1")
+app.include_router(admin_router, prefix="/api/v1")
 
 @app.get("/")
-def root():
-    return {"message": "Sistema OSINT Operativo. Scheduler Activo (Modo Clásico)."}
+def read_root():
+    return {"message": "Sentinel OSINT Backend Running (Firebase Mode) 🚀"}

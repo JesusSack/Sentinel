@@ -2,7 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --osint-dark: #0f172a;
+  --osint-card: #1e293b;
+  --osint-accent: #3b82f6;
+  --neon-red: #ef4444;
+  --neon-green: #22c55e;
+}
+
 body {
-  background-color: #0f172a;
+  background-color: var(--osint-dark);
+  /* Un fondo sutil de red cibernética */
+  background-image: 
+    radial-gradient(circle at 50% 0%, #1e293b 0%, transparent 70%),
+    linear-gradient(rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.95));
   color: #e2e8f0;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Scrollbar Hacker Style */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a; 
+}
+::-webkit-scrollbar-thumb {
+  background: #334155; 
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--osint-accent); 
+}
+
+/* Animación de entrada suave */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Efecto Glassmorphism */
+.glass-panel {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
