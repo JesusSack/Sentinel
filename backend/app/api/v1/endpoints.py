@@ -215,4 +215,3 @@ async def simulate_social_scan(current_user: User = Depends(get_current_user)):
     return {"message": f"Scan completed. {created_count} new threats detected."}
 
 
-# Cambio forzado
