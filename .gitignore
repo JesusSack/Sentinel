@@ -1,49 +1,39 @@
+#  🐍 BACKEND (PYTHON) 
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
 env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
+venv/
+.venv/
+.pytest_cache/
 *.egg-info/
 .installed.cfg
 *.egg
-venv/
-.venv/
-pyvenv.cfg
-.pytest_cache/
+
+# ⚛️ FRONTEND (NODE/REACT)
 node_modules/
 dist/
+build/
 dist-ssr/
 coverage/
-*.local
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# SEGURIDAD Y SECRETOS (CRÍTIC
 .env
 .env.*
-.env.local
+!.env.example
+# Credenciales de Firebase
 serviceAccountKey.json
+# Certificados SSL/SSH
 *.pem
 *.key
-osint_module_backend/serviceAccountKey.json  
 
-*.pdf
-*.csv
-*.xlsx
+# 🖥️ IDE Y SISTEMA OPERATIVO 
 .DS_Store
 Thumbs.db
 .vscode/
@@ -52,6 +42,17 @@ Thumbs.db
 *.ntvs*
 *.njsproj
 *.sln
+
+# 🛡️ SENTINEL SPECIFIC (OUTPUTS) 
+*.pdf
+*.csv
+*.xlsx
+*.json
+
+# Logs del sistema
 logs/*
 !logs/.gitkeep
-package-lock.json
+*.log
+
+#  🐳 DOCKER 
+.docker/

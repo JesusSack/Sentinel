@@ -1,199 +1,254 @@
-# 🛡️ SENTINEL - Advanced OSINT Threat Intelligence Platform
+# 🛡️ SENTINEL - Automated Threat Intelligence Platform (ATIP)
 
 ![Status](https://img.shields.io/badge/status-production_ready-success)
-![Version](https://img.shields.io/badge/version-2.0.0-blue)
-![Security](https://img.shields.io/badge/security-Firebase_Auth-red)
-![Docker](https://img.shields.io/badge/deploy-Docker_Compose-2496ED)
+![Version](https://img.shields.io/badge/version-3.1.0-blueviolet)
+![Deploy](https://img.shields.io/badge/deploy-Docker_Compose-2496ED)
+![AI Powered](https://img.shields.io/badge/AI-TextBlob_Analysis-orange)
 
-> **Comprehensive Cyber Intelligence Platform for real-time threat ingestion, normalization, analysis, and management.**
-
----
-
-## 📋 Project Overview
-
-**Sentinel** has evolved from a simple RSS aggregator into an **Enterprise-Grade** OSINT threat intelligence solution. The system allows security analysts to monitor multiple data sources, manage the alert lifecycle (detection, analysis, escalation), and generate automated executive reports.
-
-Unlike traditional feed readers, Sentinel implements a secure architecture with **Identity Access Management (IAM)**, custom algorithm-based data cleaning, and cloud persistence.
-
-### 🚀 Key Capabilities
-
-* **🔐 Identity-First Security:** Complete authentication system (Login/Register/Recovery) delegated to **Google Firebase Auth**. Routes protected via JWT.
-* **🧠 Ingestion & Normalization Engine:** Robust scraper that ingests RSS/XML feeds (CISA, The Hacker News, BBC), eliminates HTML noise ("divs" and styling garbage), and structures the data.
-* **⚡ Incident Management:** Operational workflow allowing the analyst to:
-    * **Escalate 🔴:** Mark critical threats for immediate investigation.
-    * **Discard ❌:** Remove false positives from the workflow.
-* **📄 Automated Reporting:** Generation of intelligence reports in **PDF (Executive)** and **CSV (Analytical)** formats with character sanitization and professional formatting.
-* **💎 Cyberpunk Glassmorphism UI/UX:** Modern interface developed in React with advanced visual effects, native Dark Mode, and an interactive agent profile.
+> **A turnkey, full-stack Intelligence Module designed for autonomous data ingestion, NLP sentiment analysis, and operational reporting.**
 
 ---
 
-## 🛠️ Tech Stack
+## 📋 Executive Summary
 
-| Area | Key Technologies |
+**Sentinel** is a pre-built, modular software solution for Security Operations Centers (SOC) and Intelligence Analysts. Unlike simple aggregators, Sentinel features a **Background Service Layer** that autonomously scans, analyzes, and categorizes threats without human intervention.
+
+It consolidates **HUMINT** (Manual Entry), **OSINT** (RSS/Web), and **SOCMINT** (Reddit/Social) into a unified ecosystem backed by Google Firestore. It is fully containerized with **Docker** for immediate deployment.
+
+---
+
+## 🚀 Enterprise Capabilities
+
+### 🧠 AI & Data Processing (`/service`)
+* **NLP Sentiment Analysis:** Uses `TextBlob` to automatically score the sentiment (Positive/Negative/Neutral) of every incoming finding.
+* **Risk Calculation:** Algorithmic determination of risk levels based on keywords and sentiment score.
+* **Data Normalization:** Powered by `Pandas` to clean, deduplicate, and structure unstructured web data.
+
+### 🤖 Autonomous Automation
+* **Task Scheduling:** Integrated `APScheduler` (`scheduler.py`) ensures feeds are polled at configurable intervals (e.g., every 15 minutes) without manual triggers.
+* **Orchestrator Script:** Includes `run_scanner.py` for headless deployment (server-side workers).
+
+### 📡 Multi-Source Ingestion (`/scrapers`)
+* **RSS/XML Feeds:** Universal scraper (`rss_scraper.py`) for standard threat feeds (CISA, CERTs).
+* **Social Media:** Dedicated `social_media.py` connector utilizing `PRAW` for Reddit API monitoring.
+* **Captcha Handling:** Hybrid solver (`test_captcha.py` / `utils`) managing simulation vs. real 2Captcha resolution.
+
+### 📊 Management & Reporting
+* **Executive Reports:** Built-in `FPDF` engine to generate downloadable PDF situation reports.
+* **Admin Dashboard:** Real-time KPI monitoring, audit logs, and system health checks.
+* **Hard Deletion:** GDPR-compliant data removal with audit trails.
+
+---
+
+## 🛠️ Technology Stack
+
+| Component | Key Technologies |
 | :--- | :--- |
-| **Frontend** | React 18, Vite, **Tailwind CSS**, Axios, Lucide React (Icons) |
-| **Backend** | Python 3.10, **FastAPI**, Pandas (Data Analysis), FPDF (Reporting), Feedparser |
-| **Database** | **Google Cloud Firestore** (NoSQL Real-time Database) |
-| **Auth & Security** | Google Firebase Authentication (Email/Password + JWT) |
-| **DevOps** | Docker, Docker Compose (Multi-container Orchestration) |
+| **Frontend** | React 18, Vite, **Tailwind CSS**, Axios, Firebase SDK |
+| **Backend API** | **FastAPI**, Uvicorn, Python-Multipart |
+| **Intelligence Engine** | **TextBlob** (NLP), **Pandas** (Data), **APScheduler** (Cron) |
+| **Infrastructure** | **Docker**, Docker Compose (Orchestration) |
+| **Database** | **Google Cloud Firestore** (NoSQL Real-time DB) |
+| **Reporting** | FPDF (PDF Generation), CSV module |
 
 ---
 
-## 🏗️ System Architecture
+## 📂 Project Architecture
 
-The data flow follows a modern containerized microservices pipeline:
-
-1.  **Ingestion (Python Worker):** The `run_scanner.py` orchestrator queries configured sources and extracts metadata.
-2.  **Processing (Data Cleaning):** Regex filters and HTML Parsing are applied to sanitize dirty feed content.
-3.  **Persistence (Firestore):** Findings are stored with an initial `risk_level` calculated by basic NLP.
-4.  **Consumption (React Client):** The analyst interacts with the authenticated dashboard.
-5.  **Export (Backend API):** On-demand binary generation (PDF/CSV) filtering by criticality.
-
----
-
-## ⚙️ Installation & Deployment Guide
-
-### Prerequisites
-* Docker and Docker Compose installed.
-* Active Google Firebase account.
-
-### 1. Clone the repository
-```bash
-git clone [https://github.com/your-username/sentinel-osint.git](https://github.com/your-username/sentinel-osint.git)
-cd sentinel-osint
-
-Here is the professional English translation of your README. It uses technical terminology standard in the cybersecurity and software engineering industry (e.g., "Ingestion," "Sanitization," "Pipeline," "Deploy").
-
-Copy the code block below and replace the content of your README.md.
-
-Markdown
-
-# 🛡️ SENTINEL - Advanced OSINT Threat Intelligence Platform
-
-![Status](https://img.shields.io/badge/status-production_ready-success)
-![Version](https://img.shields.io/badge/version-2.0.0-blue)
-![Security](https://img.shields.io/badge/security-Firebase_Auth-red)
-![Docker](https://img.shields.io/badge/deploy-Docker_Compose-2496ED)
-
-> **Comprehensive Cyber Intelligence Platform for real-time threat ingestion, normalization, analysis, and management.**
-
----
-
-## 📋 Project Overview
-
-**Sentinel** has evolved from a simple RSS aggregator into an **Enterprise-Grade** OSINT threat intelligence solution. The system allows security analysts to monitor multiple data sources, manage the alert lifecycle (detection, analysis, escalation), and generate automated executive reports.
-
-Unlike traditional feed readers, Sentinel implements a secure architecture with **Identity Access Management (IAM)**, custom algorithm-based data cleaning, and cloud persistence.
-
-### 🚀 Key Capabilities
-
-* **🔐 Identity-First Security:** Complete authentication system (Login/Register/Recovery) delegated to **Google Firebase Auth**. Routes protected via JWT.
-* **🧠 Ingestion & Normalization Engine:** Robust scraper that ingests RSS/XML feeds (CISA, The Hacker News, BBC), eliminates HTML noise ("divs" and styling garbage), and structures the data.
-* **⚡ Incident Management:** Operational workflow allowing the analyst to:
-    * **Escalate 🔴:** Mark critical threats for immediate investigation.
-    * **Discard ❌:** Remove false positives from the workflow.
-* **📄 Automated Reporting:** Generation of intelligence reports in **PDF (Executive)** and **CSV (Analytical)** formats with character sanitization and professional formatting.
-* **💎 Cyberpunk Glassmorphism UI/UX:** Modern interface developed in React with advanced visual effects, native Dark Mode, and an interactive agent profile.
-
----
-
-## 🛠️ Tech Stack
-
-| Area | Key Technologies |
-| :--- | :--- |
-| **Frontend** | React 18, Vite, **Tailwind CSS**, Axios, Lucide React (Icons) |
-| **Backend** | Python 3.10, **FastAPI**, Pandas (Data Analysis), FPDF (Reporting), Feedparser |
-| **Database** | **Google Cloud Firestore** (NoSQL Real-time Database) |
-| **Auth & Security** | Google Firebase Authentication (Email/Password + JWT) |
-| **DevOps** | Docker, Docker Compose (Multi-container Orchestration) |
-
----
-
-## 🏗️ System Architecture
-
-The data flow follows a modern containerized microservices pipeline:
-
-1.  **Ingestion (Python Worker):** The `run_scanner.py` orchestrator queries configured sources and extracts metadata.
-2.  **Processing (Data Cleaning):** Regex filters and HTML Parsing are applied to sanitize dirty feed content.
-3.  **Persistence (Firestore):** Findings are stored with an initial `risk_level` calculated by basic NLP.
-4.  **Consumption (React Client):** The analyst interacts with the authenticated dashboard.
-5.  **Export (Backend API):** On-demand binary generation (PDF/CSV) filtering by criticality.
-
----
-
-## ⚙️ Installation & Deployment Guide
-
-### Prerequisites
-* Docker and Docker Compose installed.
-* Active Google Firebase account.
-
-### 1. Clone the repository
-```bash
-git clone [https://github.com/your-username/sentinel-osint.git](https://github.com/your-username/sentinel-osint.git)
-cd sentinel-osint
-2. Secrets Configuration
-The system requires credentials to function.
-
-Backend: Place your Firebase serviceAccountKey.json file inside the osint_module_backend/ folder.
-
-Frontend: Create a .env file in osint_module_frontend/ with your public keys:
-VITE_FIREBASE_API_KEY=AIzaSy...
-VITE_FIREBASE_AUTH_DOMAIN=...
-
-3. Deployment (Docker)
-Launch the full environment with a single command:
- docker-compose up --build
- Dashboard: http://localhost:5173
-
-API Documentation: http://localhost:8000/docs
-
-
-📖 Operations Manual
-Login: Register with a valid email. The system will send a verification email (simulated or real depending on config).
-
-Source Management: Access the Sources ⚙️ menu to add monitoring URLs (e.g., https://www.cisa.gov/uscert/ncas/current-activity.xml).
-
-Analysis:
-
-Monitor news cards on the Dashboard.
-
-Use the Escalate button for serious incidents or Discard for noise.
-
-Deliverable Generation:
-
-Click PDF to download a clean report of critical threats (High/Critical).
-
-Click Excel to download the full dataset for forensic analysis.
-
-
-## 📂 Project Structure
+Engineered for scalability, separating the API from the Intelligence Workers.
 
 ```text
 sentinel-osint/
-├── osint_module_backend/    # Python/FastAPI Service
+├── docker-compose.yml       # Container Orchestration
+├── backend/                 # Python Intelligence Core
+│   ├── Dockerfile           # Backend Image
+│   ├── run_scanner.py       # CLI Orchestrator for background scanning
 │   ├── app/
-│   │   ├── api/            # admin.py, endpoints.py, repost.py
-│   │   ├── models/         # finding.py, source.py
-│   │   ├── scrapers/       # base.py, rss_scraper.py
-│   │   ├── service/        # analyzer.py, schedule.py
-│   │   ├── auth.py         # Authentication logic
-│   │   └── main.py         # Application entry point
-│   ├── Dockerfile
-│   └── serviceAccountKey.json (Excluded from repo)
-├── osint_module_frontend/   # React/Vite Client
-│   ├── public/
+│   │   ├── api/v1/          # REST Endpoints
+│   │   │   ├── admin.py     # Logs & KPIs
+│   │   │   ├── endpoints.py # CRUD & Workflow
+│   │   │   └── reports.py   # PDF/CSV Export Engines
+│   │   ├── models/          # Data Structures
+│   │   ├── scrapers/        # Ingestion Layer
+│   │   │   ├── base.py      
+│   │   │   ├── rss_scraper.py
+│   │   │   ├── social_media.py
+│   │   │   └── test_captcha.py
+│   │   ├── service/         # Intelligence Layer
+│   │   │   ├── analyzer.py  # NLP & Risk Logic (TextBlob)
+│   │   │   └── scheduler.py # Background Jobs (APScheduler)
+│   │   ├── utils/           # Helpers (Captcha)
+│   │   ├── auth.py          # JWT Security
+│   │   └── main.py          # FastAPI Entry Point
+│   ├── requirements.txt     # Dependencies
+│   └── serviceAccountKey.json (Secrets)
+│
+├── frontend/                # React Client
+│   ├── Dockerfile           # Frontend Image
+│   ├── index.html           # Application Entry Point (Vite)
 │   ├── src/
-│   │   ├── assets/         # react.svg
-│   │   ├── App.css
-│   │   ├── App.jsx         # Main UI Logic
-│   │   ├── firebase.js     # Firebase Config
-│   │   ├── index.css
-│   │   └── main.jsx
-│   ├── Dockerfile
+│   │   ├── App.jsx          # Main Dashboard Logic
+│   │   ├── firebase.js      # Auth Config
+│   │   └── main.jsx         # React DOM Root
 │   ├── package.json
-│   ├── postcss.config.js
 │   ├── tailwind.config.js
 │   └── vite.config.js
-├── docker-compose.yml       # Container Orchestration
-├── .gitignore
 └── README.md
+
+
+
+Aquí tienes la versión final y completa del README.md.
+
+Este documento integra todo lo que hemos hablado: la arquitectura exacta de carpetas (incluyendo index.html), la infraestructura Docker, los módulos de IA (TextBlob, Pandas), los Scrapers y la automatización.
+
+Está redactado con un tono comercial y técnico ("Enterprise Grade") perfecto para cerrar la venta. Copia y pega todo el bloque.
+
+Markdown
+
+# 🛡️ SENTINEL - Automated Threat Intelligence Platform (ATIP)
+
+![Status](https://img.shields.io/badge/status-production_ready-success)
+![Version](https://img.shields.io/badge/version-3.1.0-blueviolet)
+![Deploy](https://img.shields.io/badge/deploy-Docker_Compose-2496ED)
+![AI Powered](https://img.shields.io/badge/AI-TextBlob_Analysis-orange)
+
+> **A turnkey, full-stack Intelligence Module designed for autonomous data ingestion, NLP sentiment analysis, and operational reporting.**
+
+---
+
+## 📋 Executive Summary
+
+**Sentinel** is a pre-built, modular software solution for Security Operations Centers (SOC) and Intelligence Analysts. Unlike simple aggregators, Sentinel features a **Background Service Layer** that autonomously scans, analyzes, and categorizes threats without human intervention.
+
+It consolidates **HUMINT** (Manual Entry), **OSINT** (RSS/Web), and **SOCMINT** (Reddit/Social) into a unified ecosystem backed by Google Firestore. It is fully containerized with **Docker** for immediate deployment.
+
+---
+
+## 🚀 Enterprise Capabilities
+
+### 🧠 AI & Data Processing (`/service`)
+* **NLP Sentiment Analysis:** Uses `TextBlob` to automatically score the sentiment (Positive/Negative/Neutral) of every incoming finding.
+* **Risk Calculation:** Algorithmic determination of risk levels based on keywords and sentiment score.
+* **Data Normalization:** Powered by `Pandas` to clean, deduplicate, and structure unstructured web data.
+
+### 🤖 Autonomous Automation
+* **Task Scheduling:** Integrated `APScheduler` (`scheduler.py`) ensures feeds are polled at configurable intervals (e.g., every 15 minutes) without manual triggers.
+* **Orchestrator Script:** Includes `run_scanner.py` for headless deployment (server-side workers).
+
+### 📡 Multi-Source Ingestion (`/scrapers`)
+* **RSS/XML Feeds:** Universal scraper (`rss_scraper.py`) for standard threat feeds (CISA, CERTs).
+* **Social Media:** Dedicated `social_media.py` connector utilizing `PRAW` for Reddit API monitoring.
+* **Captcha Handling:** Hybrid solver (`test_captcha.py` / `utils`) managing simulation vs. real 2Captcha resolution.
+
+### 📊 Management & Reporting
+* **Executive Reports:** Built-in `FPDF` engine to generate downloadable PDF situation reports.
+* **Admin Dashboard:** Real-time KPI monitoring, audit logs, and system health checks.
+* **Hard Deletion:** GDPR-compliant data removal with audit trails.
+
+---
+
+## 🛠️ Technology Stack
+
+| Component | Key Technologies |
+| :--- | :--- |
+| **Frontend** | React 18, Vite, **Tailwind CSS**, Axios, Firebase SDK |
+| **Backend API** | **FastAPI**, Uvicorn, Python-Multipart |
+| **Intelligence Engine** | **TextBlob** (NLP), **Pandas** (Data), **APScheduler** (Cron) |
+| **Infrastructure** | **Docker**, Docker Compose (Orchestration) |
+| **Database** | **Google Cloud Firestore** (NoSQL Real-time DB) |
+| **Reporting** | FPDF (PDF Generation), CSV module |
+
+---
+
+## 📂 Project Architecture
+
+Engineered for scalability, separating the API from the Intelligence Workers.
+
+```text
+sentinel-osint/
+├── docker-compose.yml       # Container Orchestration
+├── backend/                 # Python Intelligence Core
+│   ├── Dockerfile           # Backend Image
+│   ├── run_scanner.py       # CLI Orchestrator for background scanning
+│   ├── app/
+│   │   ├── api/v1/          # REST Endpoints
+│   │   │   ├── admin.py     # Logs & KPIs
+│   │   │   ├── endpoints.py # CRUD & Workflow
+│   │   │   └── reports.py   # PDF/CSV Export Engines
+│   │   ├── models/          # Data Structures
+│   │   ├── scrapers/        # Ingestion Layer
+│   │   │   ├── base.py      
+│   │   │   ├── rss_scraper.py
+│   │   │   ├── social_media.py
+│   │   │   └── test_captcha.py
+│   │   ├── service/         # Intelligence Layer
+│   │   │   ├── analyzer.py  # NLP & Risk Logic (TextBlob)
+│   │   │   └── scheduler.py # Background Jobs (APScheduler)
+│   │   ├── utils/           # Helpers (Captcha)
+│   │   ├── auth.py          # JWT Security
+│   │   └── main.py          # FastAPI Entry Point
+│   ├── requirements.txt     # Dependencies
+│   └── serviceAccountKey.json (Secrets)
+│
+├── frontend/                # React Client
+│   ├── Dockerfile           # Frontend Image
+│   ├── index.html           # Application Entry Point (Vite)
+│   ├── src/
+│   │   ├── App.jsx          # Main Dashboard Logic
+│   │   ├── firebase.js      # Auth Config
+│   │   └── main.jsx         # React DOM Root
+│   ├── package.json
+│   ├── tailwind.config.js
+│   └── vite.config.js
+└── README.md
+⚙️ Installation & Setup
+Prerequisites
+Docker & Docker Compose
+
+Google Firebase Credentials
+
+🐳 Option A: Docker Deployment (Recommended)
+Launch the entire stack with a single command. Ideal for production or quick demos.
+
+1 Configure Secrets:
+
+Place serviceAccountKey.json in /backend.
+
+Update .env or docker-compose.yml with your Firebase public keys.
+
+2 Launch : 
+
+ docker-compose up --build
+
+3 Access:
+
+Dashboard: http://localhost:5173
+
+API Documentation: http://localhost:8000/docs
+
+🐍 Option B: Manual Setup (Dev Mode)
+
+1. Backend (API & Workers)
+
+cd backend
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install -r requirements.txt
+
+# Run API
+uvicorn app.main:app --reload
+
+# (Optional) Run Background Scanner
+python run_scanner.py
+
+2. Frontend (Dashboard)
+
+🛡️ Security Model
+Authentication: Delegated to Google Firebase Auth (Identity Platform).
+
+Role-Based Access: Distinction between Analyst (View/Edit) and Admin (Delete/Audit).
+
+Sanitization: All HTML inputs are stripped to prevent XSS attacks before storage.
+
+📄 License & Transfer
+Commercial Proprietary Software. Full source code ownership transfer upon acquisition. No encrypted binaries.
