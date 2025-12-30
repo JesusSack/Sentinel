@@ -107,6 +107,19 @@ async def update_finding_status(finding_id: str, update_data: FindingUpdate, cur
 
     return {"message": "Finding updated successfully"}
 
+# NUEVO ENDPOINT PARA ELIMINAR HALLAZGOS
+@router.delete("/findings/{finding_id}")
+async def delete_finding(finding_id: str, current_user: User = Depends(get_current_user)):
+    db = firestore.client()
+    try:
+        from app.api.v1.admin import log_action
+        log_action(current_user.username, "DELETE_FINDING", f"Deleted finding ID: {finding_id}")
+    except:
+        pass
+        
+    db.collection("findings").document(finding_id).delete()
+    return {"message": "Finding permanently deleted"}
+
 
 @router.post("/findings/manual")
 async def create_manual_finding(finding: ManualFinding, current_user: User = Depends(get_current_user)):
@@ -129,7 +142,7 @@ async def create_manual_finding(finding: ManualFinding, current_user: User = Dep
     return {"message": "Hallazgo registrado correctamente", "id": doc_ref[1].id}
 
 
-# ENDPOINT
+# ENDPOINT SIMULACION
 @router.post("/simulate/social")
 async def simulate_social_scan(current_user: User = Depends(get_current_user)):
     db = firestore.client()
