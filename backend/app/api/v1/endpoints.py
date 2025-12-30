@@ -39,7 +39,7 @@ async def register_user(user: UserCreate):
     db = firestore.client()
     existing = db.collection("users").where("username", "==", user.username).stream()
     if any(existing):
-        raise HTTPException(status_code=400, detail="El usuario ya existe")
+        raise HTTPException(status_code=400, detail="User already exists")
 
     hashed_password = pwd_context.hash(user.password)
     db.collection("users").add({
@@ -52,11 +52,11 @@ async def register_user(user: UserCreate):
     # Log de la acción 
     try:
         from app.api.v1.admin import log_action
-        log_action("system", "NEW_USER", f"Usuario registrado: {user.username}")
+        log_action("system", "NEW_USER", f"User registered: {user.username}")
     except ImportError:
         pass
     
-    return {"message": "Usuario creado exitosamente"}
+    return {"message": "User created successfully"}
 
 #  FUENTES 
 @router.get("/sources", response_model=List[dict])
@@ -70,19 +70,19 @@ async def add_source(source: SourceModel, current_user: User = Depends(get_curre
     db = firestore.client()
     existing = db.collection("sources").where("url", "==", source.url).stream()
     if any(existing):
-        raise HTTPException(status_code=400, detail="Esa URL ya está registrada")
+        raise HTTPException(status_code=400, detail="URL already registered")
         
     doc_ref = db.collection("sources").add(source.dict())
     
-    return {"message": "Fuente agregada", "id": doc_ref[1].id}
+    return {"message": "Source added successfully", "id": doc_ref[1].id}
 
 @router.delete("/sources/{source_id}")
 async def delete_source(source_id: str, current_user: User = Depends(get_current_user)):
     db = firestore.client()
     db.collection("sources").document(source_id).delete()
-    return {"message": "Fuente eliminada"}
+    return {"message": "Source deleted"}
 
-#   HALLAZGOS 
+#   HALLAZGOS
 @router.get("/findings")
 async def get_findings(current_user: User = Depends(get_current_user)):
     db = firestore.client()
@@ -107,7 +107,6 @@ async def update_finding_status(finding_id: str, update_data: FindingUpdate, cur
 
     return {"message": "Finding updated successfully"}
 
-# NUEVO ENDPOINT PARA ELIMINAR HALLAZGOS
 @router.delete("/findings/{finding_id}")
 async def delete_finding(finding_id: str, current_user: User = Depends(get_current_user)):
     db = firestore.client()
@@ -139,10 +138,9 @@ async def create_manual_finding(finding: ManualFinding, current_user: User = Dep
     
     doc_ref = db.collection("findings").add(new_doc)
     
-    return {"message": "Hallazgo registrado correctamente", "id": doc_ref[1].id}
+    return {"message": "Manual entry registered", "id": doc_ref[1].id}
 
 
-# ENDPOINT SIMULACION
 @router.post("/simulate/social")
 async def simulate_social_scan(current_user: User = Depends(get_current_user)):
     db = firestore.client()
@@ -150,48 +148,48 @@ async def simulate_social_scan(current_user: User = Depends(get_current_user)):
 
     threat_pool = [
         {
-            "title": "ALERTA: Credenciales corporativas en Pastebin",
-            "content": "Bot detectó un dump de emails @empresa.com con contraseñas en texto plano. Fuente: Pastebin #OpLeak.",
+            "title": "CRITICAL: Corporate Credentials Leak on Pastebin",
+            "content": "Bot detected a dump of emails @company.com with plaintext passwords. Source: Pastebin #OpLeak.",
             "risk_level": "critical",
             "url": "https://pastebin.com/raw/fake123",
             "source_id": "pastebin_monitor",
             "sentiment": -0.95
         },
         {
-            "title": "Mención sospechosa en Foro Ruso (XSS)",
-            "content": "Usuario 'DarkHacker' pregunta por vulnerabilidades XSS en el login de proveedores. Posible reconocimiento.",
+            "title": "Suspicious Mention in Russian Forum (XSS)",
+            "content": "User 'DarkHacker' asking for XSS vulnerabilities in the provider login portal. Possible recon activity.",
             "risk_level": "high",
             "url": "https://xss-forum.ru/threads/123",
             "source_id": "darkweb_scrapper",
             "sentiment": -0.8
         },
         {
-            "title": "Queja viral en Twitter sobre servicio caído",
-            "content": "Usuarios reportan imposibilidad de acceso masivo. El tweet tiene 400 RTs en 10 minutos. Posible impacto reputacional.",
+            "title": "Viral Complaint on Twitter regarding Service Outage",
+            "content": "Users reporting mass access failure. Tweet has 400 RTs in 10 minutes. Potential reputational impact.",
             "risk_level": "medium",
             "url": "https://twitter.com/user/status/99999",
             "source_id": "twitter_api",
             "sentiment": -0.6
         },
         {
-            "title": "GitHub: Código fuente expuesto accidentalmente",
-            "content": "Se detectó una API Key de AWS hardcodeada en un repositorio público de un ex-empleado.",
+            "title": "GitHub: Source Code Accidentally Exposed",
+            "content": "Detected hardcoded AWS API Key in a public repository belonging to a former employee.",
             "risk_level": "critical",
             "url": "https://github.com/search?q=company",
             "source_id": "github_recon",
             "sentiment": -0.9
         },
         {
-            "title": "Reddit: Discusión sobre despidos",
-            "content": "Hilo en r/sysadmin discutiendo rumores de reestructuración interna. Información sensible filtrada.",
+            "title": "Reddit: Discussion about Layoffs",
+            "content": "Thread in r/sysadmin discussing rumors of internal restructuring. Sensitive information potentially leaked.",
             "risk_level": "low",
             "url": "https://reddit.com/r/sysadmin",
             "source_id": "reddit_api",
             "sentiment": -0.4
         },
         {
-            "title": "Telegram: Venta de accesos VPN",
-            "content": "Canal 'Access Broker' ofrece credenciales VPN Fortinet supuestamente pertenecientes a la organización.",
+            "title": "Telegram: VPN Access Sale",
+            "content": "Channel 'Access Broker' offering Fortinet VPN credentials allegedly belonging to the organization.",
             "risk_level": "critical",
             "url": "https://t.me/access_broker_v2",
             "source_id": "telegram_monitor",
@@ -200,9 +198,9 @@ async def simulate_social_scan(current_user: User = Depends(get_current_user)):
     ]
     selected_threats = random.sample(threat_pool, k=random.randint(1, 3))
 
-    # 3. Guardamos los resultados en Firestore
+    # resultados en Firestore
     for item in selected_threats:
-        # identificador aleatorio al título para que no parezcan duplicados si salen dos veces
+        # ID aleatorio visual
         random_id = random.randint(1000, 9999)
         
         doc_data = item.copy()
@@ -214,4 +212,4 @@ async def simulate_social_scan(current_user: User = Depends(get_current_user)):
         db.collection("findings").add(doc_data)
         created_count += 1
 
-    return {"message": f"Escaneo finalizado. {created_count} nuevas amenazas detectadas."}
+    return {"message": f"Scan completed. {created_count} new threats detected."}
