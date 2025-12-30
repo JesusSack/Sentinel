@@ -12,3 +12,5 @@ pandas
 python-dotenv
 python-multipart
 passlib[bcrypt]
+requests
+python-dotenv
