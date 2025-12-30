@@ -1,35 +1,14 @@
-# Framework Web & API
 fastapi
-uvicorn[standard]
-python-multipart
-
-# Base de Datos (Firebase)
-firebase-admin            
-google-cloud-firestore
-
-# Scraping & HTTP 
-requests
-beautifulsoup4
-playwright
-feedparser
-praw
-
-# Procesamiento de Datos & NLP
-pandas
-textblob
-nltk
-
-# Utilidades & Scheduler
-apscheduler
-python-dotenv
+uvicorn
+firebase-admin
 pydantic
-pydantic-settings
-jinja2
-
-# Seguridad & Auth
-python-jose[cryptography]
-passlib[bcrypt]
-bcrypt==4.0.1
-
-# Reportes
+requests
+praw
+feedparser
+textblob
+apscheduler
 fpdf
+pandas
+python-dotenv
+python-multipart
+passlib[bcrypt]

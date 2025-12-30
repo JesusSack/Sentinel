@@ -39,7 +39,7 @@ pnpm-debug.log*
 serviceAccountKey.json
 *.pem
 *.key
-osint_module_backend/serviceAccountKey.json  # Ruta explícita por seguridad
+osint_module_backend/serviceAccountKey.json  
 
 *.pdf
 *.csv

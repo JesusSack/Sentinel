@@ -2,54 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Configuración Base */
 :root {
-  --osint-dark: #0f172a;
-  --osint-card: #1e293b;
-  --osint-accent: #3b82f6;
-  --neon-red: #ef4444;
-  --neon-green: #22c55e;
+  --bg-page: #f0f2f5;   
 }
 
 body {
-  background-color: var(--osint-dark);
-  /* Un fondo sutil de red cibernética */
-  background-image: 
-    radial-gradient(circle at 50% 0%, #1e293b 0%, transparent 70%),
-    linear-gradient(rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.95));
-  color: #e2e8f0;
-  font-family: 'Inter', sans-serif;
-  overflow-x: hidden;
+  background-color: var(--bg-page);
+  /* Fuente moderna por defecto */
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #111827; 
 }
 
-/* Scrollbar Hacker Style */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
+
 ::-webkit-scrollbar-track {
-  background: #0f172a; 
+  background: #e5e7eb; 
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #334155; 
-  border-radius: 4px;
+  background: #9ca3af; 
+  border-radius: 5px;
+  border: 2px solid #e5e7eb; 
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--osint-accent); 
-}
-
-/* Animación de entrada suave */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
-}
-
-/* Efecto Glassmorphism */
-.glass-panel {
-  background: rgba(30, 41, 59, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #6b7280; /* gray-500 */
 }

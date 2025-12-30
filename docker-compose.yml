@@ -11,7 +11,9 @@ services:
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=serviceAccountKey.json
 
-  # Servicio de React
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+ # Servicio de React
   frontend:
     build: ./osint_module_frontend
     ports:
@@ -20,4 +22,5 @@ services:
       - ./osint_module_frontend:/app
       - /app/node_modules
     depends_on:
-      - backend 
+      - backend
+    command: sh -c "npm install && npm run dev -- --host"
