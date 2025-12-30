@@ -47,7 +47,6 @@ Thumbs.db
 *.pdf
 *.csv
 *.xlsx
-*.json
 
 # Logs del sistema
 logs/*
