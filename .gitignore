@@ -54,3 +54,4 @@ Thumbs.db
 *.sln
 logs/*
 !logs/.gitkeep
+package-lock.json
