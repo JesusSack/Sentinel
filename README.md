@@ -1,9 +1,10 @@
 # 🛡️ SENTINEL - Automated Threat Intelligence Platform (ATIP)
 
 ![Status](https://img.shields.io/badge/status-production_ready-success)
-![Version](https://img.shields.io/badge/version-3.1.0-blueviolet)
+![Version](https://img.shields.io/badge/version-3.1.1-blueviolet)
 ![Deploy](https://img.shields.io/badge/deploy-Docker_Compose-2496ED)
 ![AI Powered](https://img.shields.io/badge/AI-TextBlob_Analysis-orange)
+![Security](https://img.shields.io/badge/security-Firebase_Auth-red)
 
 > **A turnkey, full-stack Intelligence Module designed for autonomous data ingestion, NLP sentiment analysis, and operational reporting.**
 
@@ -44,7 +45,8 @@ It consolidates **HUMINT** (Manual Entry), **OSINT** (RSS/Web), and **SOCMINT** 
 
 | Component | Key Technologies |
 | :--- | :--- |
-| **Frontend** | React 18, Vite, **Tailwind CSS**, Axios, Firebase SDK |
+| **Frontend** | React 18, Vite, **Tailwind CSS**, Axios |
+| **Authentication** | **Firebase Auth** (Secure Email/Password Strategy) |
 | **Backend API** | **FastAPI**, Uvicorn, Python-Multipart |
 | **Intelligence Engine** | **TextBlob** (NLP), **Pandas** (Data), **APScheduler** (Cron) |
 | **Infrastructure** | **Docker**, Docker Compose (Orchestration) |
@@ -95,7 +97,6 @@ sentinel-osint/
 │   └── vite.config.js
 └── README.md
 
-
 ⚙️ Installation & Setup
 Prerequisites
 Docker & Docker Compose
@@ -105,26 +106,26 @@ Google Firebase Credentials
 🐳 Option A: Docker Deployment (Recommended)
 Launch the entire stack with a single command. Ideal for production or quick demos.
 
-1 Configure Secrets:
+1.Configure Secrets:
 
 Place serviceAccountKey.json in /backend.
 
 Update .env or docker-compose.yml with your Firebase public keys.
 
-2 Launch:
+2.Launch:
+  docker-compose up --build
 
-docker-compose up --build
-
-
-3 Access:
+3. Access:
 
 Dashboard: http://localhost:5173
 
 API Documentation: http://localhost:8000/docs
 
+
 🐍 Option B: Manual Setup (Dev Mode)
 1. Backend (API & Workers)
-   cd backend
+
+cd backend
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
@@ -135,15 +136,15 @@ uvicorn app.main:app --reload
 # (Optional) Run Background Scanner
 python run_scanner.py
 
-
 2. Frontend (Dashboard)
-   cd frontend
+
+cd frontend
 npm install
 # Configure .env with VITE_API_URL=http://localhost:8000
 npm run dev
 
 🛡️ Security Model
-Authentication: Delegated to Google Firebase Auth (Identity Platform).
+Authentication: Managed via Firebase Authentication using secure Email/Password tokens.
 
 Role-Based Access: Distinction between Analyst (View/Edit) and Admin (Delete/Audit).
 
