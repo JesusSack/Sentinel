@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
   ShieldAlert, Activity, RefreshCw, ExternalLink, AlertTriangle,
   Lock, User, FileText, FileSpreadsheet, XCircle, AlertOctagon,
-  Settings, Plus, Trash2, Database, Share2
+  Settings, Plus, Trash2, Database, Share2, LayoutDashboard, ScrollText
 } from 'lucide-react';
 
 import { auth } from './firebase';
@@ -38,12 +38,18 @@ function App() {
 
   const [findings, setFindings] = useState([]);
   const [sources, setSources] = useState([]);
+  
+  // MODALES
   const [showSourcesModal, setShowSourcesModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
-  
   const [showManualModal, setShowManualModal] = useState(false);
-  const [manualFinding, setManualFinding] = useState({ title: '', content: '', risk_level: 'low', url: '' });
+  const [showAdminModal, setShowAdminModal] = useState(false); 
 
+  // DATOS ADMIN
+  const [adminLogs, setAdminLogs] = useState([]);
+  const [adminStats, setAdminStats] = useState(null);
+
+  const [manualFinding, setManualFinding] = useState({ title: '', content: '', risk_level: 'low', url: '' });
   const [newSource, setNewSource] = useState({ name: '', url: '', category: 'news', type: 'rss' });
   const [loading, setLoading] = useState(false);
 
@@ -106,25 +112,6 @@ function App() {
     }
   };
 
-  const handleManualSubmit = async (e) => {
-    e.preventDefault();
-    if (!token) return;
-
-    try {
-      await axios.post(`${API_URL}/api/v1/findings/manual`, manualFinding, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setManualFinding({ title: '', content: '', risk_level: 'low', url: '' });
-      setShowManualModal(false);
-      setMsg({ type: 'success', text: "Human entry registered." });
-      fetchData();
-
-    } catch (err) {
-      console.error(err);
-      alert("Error registering entry: " + (err.response?.data?.detail || err.message));
-    }
-  };
-
   const handleLogout = async () => {
     await signOut(auth);
     setToken(null);
@@ -133,25 +120,35 @@ function App() {
     setPassword("");
   };
 
-  const handleSocialScan = async (e) => {
-    if (e) e.preventDefault(); 
-    
-    if (!token) {
-        alert("Session Error: No valid token. Please reload.");
-        return;
-    }
+  //  ACTIONS 
 
-    setLoading(true);
+  const handleManualSubmit = async (e) => {
+    e.preventDefault();
+    if (!token) return;
     try {
-      const response = await axios.post(`${API_URL}/api/v1/simulate/social`, {}, {
+      await axios.post(`${API_URL}/api/v1/findings/manual`, manualFinding, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      setManualFinding({ title: '', content: '', risk_level: 'low', url: '' });
+      setShowManualModal(false);
+      setMsg({ type: 'success', text: "Human entry registered." });
+      fetchData();
+    } catch (err) {
+      alert("Error: " + (err.response?.data?.detail || err.message));
+    }
+  };
 
+  const handleSocialScan = async (e) => {
+    if (e) e.preventDefault(); 
+    if (!token) return;
+    setLoading(true);
+    try {
+      await axios.post(`${API_URL}/api/v1/simulate/social`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setMsg({ type: 'success', text: "Social Media Scan Completed." });
       fetchData();
-
     } catch (err) {
-      console.error("Scan Error:", err);
       alert("Scan error: " + (err.response?.data?.detail || err.message));
     } finally {
       setLoading(false);
@@ -160,17 +157,17 @@ function App() {
 
   const handleDeleteFinding = async (id) => {
     if (!confirm("⚠️ Are you sure you want to PERMANENTLY DELETE this target?\nThis action cannot be undone.")) return;
-    
     try {
       await axios.delete(`${API_URL}/api/v1/findings/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setFindings(findings.filter(f => f.id !== id));
     } catch (err) {
-      console.error(err);
       alert("Error deleting: " + (err.response?.data?.detail || "Server Error"));
     }
   };
+
+  //  DATA FETCHING 
 
   const fetchData = async () => {
     if (!token) return;
@@ -179,15 +176,12 @@ function App() {
       const response = await axios.get(`${API_URL}/api/v1/findings?t=${new Date().getTime()}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      
       const sorted = response.data.sort((a, b) => {
         if (a.status === 'new' && b.status !== 'new') return -1;
         if (a.status !== 'new' && b.status === 'new') return 1;
-
         const riskOrder = { critical: 3, high: 2, medium: 1, low: 0 };
         return (riskOrder[b.risk_level] || 0) - (riskOrder[a.risk_level] || 0);
       });
-
       setFindings(sorted);
     } catch (err) { console.error(err); } finally { setLoading(false); }
   };
@@ -200,6 +194,28 @@ function App() {
       setSources(res.data);
     } catch (err) { console.error(err); }
   };
+
+  //  ADMIN FETCH 
+  const fetchAdminData = async () => {
+    if (!token) return;
+    try {
+        const [logsRes, statsRes] = await Promise.all([
+            axios.get(`${API_URL}/api/v1/admin/logs`, { headers: { Authorization: `Bearer ${token}` } }),
+            axios.get(`${API_URL}/api/v1/admin/stats`, { headers: { Authorization: `Bearer ${token}` } })
+        ]);
+        setAdminLogs(logsRes.data);
+        setAdminStats(statsRes.data);
+    } catch (err) {
+        console.error("Admin fetch error", err);
+        // Si falla (ej: 403), no hacemos nada o mostramos alerta
+    }
+  };
+
+  // Se activa al abrir el modal admin
+  useEffect(() => {
+    if (showAdminModal) fetchAdminData();
+  }, [showAdminModal]);
+
 
   const handleAddSource = async (e) => {
     e.preventDefault();
@@ -339,6 +355,11 @@ function App() {
             <Share2 size={16} /> Social Scan
           </button>
 
+          {/* BOTÓN ADMIN PANEL */}
+          <button onClick={() => setShowAdminModal(true)} className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm transition shadow-md">
+            <LayoutDashboard size={16} /> Admin Panel
+          </button>
+
           <button onClick={() => setShowSourcesModal(true)} className="bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 px-4 py-2 rounded-lg flex items-center gap-2 text-sm transition shadow-sm"><Settings size={16} /> Sources</button>
           <div className="h-8 w-px bg-gray-300 mx-2 hidden md:block"></div>
           <button onClick={() => downloadReport('pdf')} className="bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 px-4 py-2 rounded-lg flex items-center gap-2 text-sm transition"><FileText size={16} /> PDF</button>
@@ -346,6 +367,107 @@ function App() {
           <button onClick={fetchData} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center gap-2 transition shadow-md"><RefreshCw size={18} className={loading ? "animate-spin" : ""} /></button>
         </div>
       </header>
+
+      {/*  MODAL ADMIN DASHBOARD */}
+      {showAdminModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-6 backdrop-blur-sm animate-in fade-in zoom-in">
+          <div className="bg-white w-full max-w-5xl rounded-2xl border border-gray-300 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            
+            {/* Header Admin */}
+            <div className="p-6 border-b border-gray-200 flex justify-between items-center bg-gray-900 text-white">
+              <div>
+                <h2 className="text-2xl font-bold flex items-center gap-3">
+                  <LayoutDashboard className="text-blue-400" /> SYSTEM ADMINISTRATION
+                </h2>
+                <p className="text-gray-400 text-sm mt-1">Real-time system monitoring & audit logs</p>
+              </div>
+              <button onClick={() => setShowAdminModal(false)} className="text-gray-400 hover:text-white transition"><XCircle size={28} /></button>
+            </div>
+
+            <div className="p-8 overflow-y-auto bg-gray-50 flex-grow">
+              
+              {/* 1. SECTION: STATISTICS CARDS */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                {/* Card Total */}
+                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+                  <div>
+                    <p className="text-gray-500 text-sm font-bold uppercase">Total Findings</p>
+                    <h3 className="text-4xl font-bold text-gray-900 mt-2">{adminStats?.total_findings || 0}</h3>
+                  </div>
+                  <div className="bg-blue-100 p-4 rounded-full text-blue-600"><Database size={24} /></div>
+                </div>
+
+                {/* Card Status */}
+                <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+                   <div>
+                    <p className="text-gray-500 text-sm font-bold uppercase">System Health</p>
+                    <h3 className="text-xl font-bold text-green-600 mt-2 flex items-center gap-2">
+                      <span className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span> 
+                      {adminStats?.system_health || "ONLINE"}
+                    </h3>
+                  </div>
+                  <div className="bg-green-100 p-4 rounded-full text-green-600"><Activity size={24} /></div>
+                </div>
+
+                {/* Card Risk Distro */}
+                <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                   <p className="text-gray-500 text-xs font-bold uppercase mb-3">Threat Distribution</p>
+                   <div className="space-y-2">
+                      <div className="flex justify-between text-xs"><span>Critical</span> <span className="font-bold">{adminStats?.risk_distribution?.critical || 0}</span></div>
+                      <div className="w-full bg-gray-200 rounded-full h-1.5"><div className="bg-red-600 h-1.5 rounded-full" style={{width: `${(adminStats?.risk_distribution?.critical / (adminStats?.total_findings||1))*100}%`}}></div></div>
+                      
+                      <div className="flex justify-between text-xs"><span>High</span> <span className="font-bold">{adminStats?.risk_distribution?.high || 0}</span></div>
+                      <div className="w-full bg-gray-200 rounded-full h-1.5"><div className="bg-orange-500 h-1.5 rounded-full" style={{width: `${(adminStats?.risk_distribution?.high / (adminStats?.total_findings||1))*100}%`}}></div></div>
+                   </div>
+                </div>
+              </div>
+
+              {/* 2. SECTION: AUDIT LOGS */}
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <div className="p-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+                   <h3 className="font-bold text-gray-800 flex items-center gap-2"><ScrollText size={18}/> Audit Logs (Last 50)</h3>
+                   <button onClick={fetchAdminData} className="text-blue-600 hover:text-blue-800 text-xs font-bold flex items-center gap-1"><RefreshCw size={12}/> REFRESH</button>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm text-left">
+                    <thead className="text-xs text-gray-500 uppercase bg-gray-100">
+                      <tr>
+                        <th className="px-6 py-3">Timestamp</th>
+                        <th className="px-6 py-3">User</th>
+                        <th className="px-6 py-3">Action</th>
+                        <th className="px-6 py-3">Details</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {adminLogs.length === 0 ? (
+                        <tr><td colSpan="4" className="text-center py-6 text-gray-500">No logs found.</td></tr>
+                      ) : (
+                        adminLogs.map((log) => (
+                          <tr key={log.id || Math.random()} className="border-b hover:bg-gray-50 transition">
+                            <td className="px-6 py-3 font-mono text-xs text-gray-500">{new Date(log.timestamp).toLocaleString()}</td>
+                            <td className="px-6 py-3 font-bold text-gray-700">{log.user}</td>
+                            <td className="px-6 py-3">
+                              <span className={`px-2 py-1 rounded text-[10px] font-bold border ${
+                                log.action.includes("DELETE") ? 'bg-red-50 text-red-700 border-red-200' :
+                                log.action.includes("LOGIN") ? 'bg-blue-50 text-blue-700 border-blue-200' :
+                                'bg-gray-100 text-gray-700 border-gray-200'
+                              }`}>
+                                {log.action}
+                              </span>
+                            </td>
+                            <td className="px-6 py-3 text-gray-600">{log.details}</td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* MODAL FUENTES */}
       {showSourcesModal && (
