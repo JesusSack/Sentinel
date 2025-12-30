@@ -47,3 +47,5 @@ app.include_router(admin_router, prefix="/api/v1")
 @app.get("/")
 def read_root():
     return {"message": "SISTEMA ACTUALIZADO - DELETE HABILITADO V2.0 🚀"}
+
+# Cambio forzado
