@@ -46,4 +46,4 @@ app.include_router(admin_router, prefix="/api/v1")
 
 @app.get("/")
 def read_root():
-    return {"message": "Sentinel OSINT Backend Running (Firebase Mode) 🚀"}
+    return {"message": "SISTEMA ACTUALIZADO - DELETE HABILITADO V2.0 🚀"}
