@@ -96,111 +96,6 @@ sentinel-osint/
 └── README.md
 
 
-
-Aquí tienes la versión final y completa del README.md.
-
-Este documento integra todo lo que hemos hablado: la arquitectura exacta de carpetas (incluyendo index.html), la infraestructura Docker, los módulos de IA (TextBlob, Pandas), los Scrapers y la automatización.
-
-Está redactado con un tono comercial y técnico ("Enterprise Grade") perfecto para cerrar la venta. Copia y pega todo el bloque.
-
-Markdown
-
-# 🛡️ SENTINEL - Automated Threat Intelligence Platform (ATIP)
-
-![Status](https://img.shields.io/badge/status-production_ready-success)
-![Version](https://img.shields.io/badge/version-3.1.0-blueviolet)
-![Deploy](https://img.shields.io/badge/deploy-Docker_Compose-2496ED)
-![AI Powered](https://img.shields.io/badge/AI-TextBlob_Analysis-orange)
-
-> **A turnkey, full-stack Intelligence Module designed for autonomous data ingestion, NLP sentiment analysis, and operational reporting.**
-
----
-
-## 📋 Executive Summary
-
-**Sentinel** is a pre-built, modular software solution for Security Operations Centers (SOC) and Intelligence Analysts. Unlike simple aggregators, Sentinel features a **Background Service Layer** that autonomously scans, analyzes, and categorizes threats without human intervention.
-
-It consolidates **HUMINT** (Manual Entry), **OSINT** (RSS/Web), and **SOCMINT** (Reddit/Social) into a unified ecosystem backed by Google Firestore. It is fully containerized with **Docker** for immediate deployment.
-
----
-
-## 🚀 Enterprise Capabilities
-
-### 🧠 AI & Data Processing (`/service`)
-* **NLP Sentiment Analysis:** Uses `TextBlob` to automatically score the sentiment (Positive/Negative/Neutral) of every incoming finding.
-* **Risk Calculation:** Algorithmic determination of risk levels based on keywords and sentiment score.
-* **Data Normalization:** Powered by `Pandas` to clean, deduplicate, and structure unstructured web data.
-
-### 🤖 Autonomous Automation
-* **Task Scheduling:** Integrated `APScheduler` (`scheduler.py`) ensures feeds are polled at configurable intervals (e.g., every 15 minutes) without manual triggers.
-* **Orchestrator Script:** Includes `run_scanner.py` for headless deployment (server-side workers).
-
-### 📡 Multi-Source Ingestion (`/scrapers`)
-* **RSS/XML Feeds:** Universal scraper (`rss_scraper.py`) for standard threat feeds (CISA, CERTs).
-* **Social Media:** Dedicated `social_media.py` connector utilizing `PRAW` for Reddit API monitoring.
-* **Captcha Handling:** Hybrid solver (`test_captcha.py` / `utils`) managing simulation vs. real 2Captcha resolution.
-
-### 📊 Management & Reporting
-* **Executive Reports:** Built-in `FPDF` engine to generate downloadable PDF situation reports.
-* **Admin Dashboard:** Real-time KPI monitoring, audit logs, and system health checks.
-* **Hard Deletion:** GDPR-compliant data removal with audit trails.
-
----
-
-## 🛠️ Technology Stack
-
-| Component | Key Technologies |
-| :--- | :--- |
-| **Frontend** | React 18, Vite, **Tailwind CSS**, Axios, Firebase SDK |
-| **Backend API** | **FastAPI**, Uvicorn, Python-Multipart |
-| **Intelligence Engine** | **TextBlob** (NLP), **Pandas** (Data), **APScheduler** (Cron) |
-| **Infrastructure** | **Docker**, Docker Compose (Orchestration) |
-| **Database** | **Google Cloud Firestore** (NoSQL Real-time DB) |
-| **Reporting** | FPDF (PDF Generation), CSV module |
-
----
-
-## 📂 Project Architecture
-
-Engineered for scalability, separating the API from the Intelligence Workers.
-
-```text
-sentinel-osint/
-├── docker-compose.yml       # Container Orchestration
-├── backend/                 # Python Intelligence Core
-│   ├── Dockerfile           # Backend Image
-│   ├── run_scanner.py       # CLI Orchestrator for background scanning
-│   ├── app/
-│   │   ├── api/v1/          # REST Endpoints
-│   │   │   ├── admin.py     # Logs & KPIs
-│   │   │   ├── endpoints.py # CRUD & Workflow
-│   │   │   └── reports.py   # PDF/CSV Export Engines
-│   │   ├── models/          # Data Structures
-│   │   ├── scrapers/        # Ingestion Layer
-│   │   │   ├── base.py      
-│   │   │   ├── rss_scraper.py
-│   │   │   ├── social_media.py
-│   │   │   └── test_captcha.py
-│   │   ├── service/         # Intelligence Layer
-│   │   │   ├── analyzer.py  # NLP & Risk Logic (TextBlob)
-│   │   │   └── scheduler.py # Background Jobs (APScheduler)
-│   │   ├── utils/           # Helpers (Captcha)
-│   │   ├── auth.py          # JWT Security
-│   │   └── main.py          # FastAPI Entry Point
-│   ├── requirements.txt     # Dependencies
-│   └── serviceAccountKey.json (Secrets)
-│
-├── frontend/                # React Client
-│   ├── Dockerfile           # Frontend Image
-│   ├── index.html           # Application Entry Point (Vite)
-│   ├── src/
-│   │   ├── App.jsx          # Main Dashboard Logic
-│   │   ├── firebase.js      # Auth Config
-│   │   └── main.jsx         # React DOM Root
-│   ├── package.json
-│   ├── tailwind.config.js
-│   └── vite.config.js
-└── README.md
 ⚙️ Installation & Setup
 Prerequisites
 Docker & Docker Compose
@@ -216,9 +111,10 @@ Place serviceAccountKey.json in /backend.
 
 Update .env or docker-compose.yml with your Firebase public keys.
 
-2 Launch : 
+2 Launch:
 
- docker-compose up --build
+docker-compose up --build
+
 
 3 Access:
 
@@ -227,10 +123,8 @@ Dashboard: http://localhost:5173
 API Documentation: http://localhost:8000/docs
 
 🐍 Option B: Manual Setup (Dev Mode)
-
 1. Backend (API & Workers)
-
-cd backend
+   cd backend
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
@@ -241,7 +135,12 @@ uvicorn app.main:app --reload
 # (Optional) Run Background Scanner
 python run_scanner.py
 
+
 2. Frontend (Dashboard)
+   cd frontend
+npm install
+# Configure .env with VITE_API_URL=http://localhost:8000
+npm run dev
 
 🛡️ Security Model
 Authentication: Delegated to Google Firebase Auth (Identity Platform).
